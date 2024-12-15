@@ -26,4 +26,12 @@ def emotion_detector(text_to_analyze):
         return output
         
     elif response.status_code == 400:
-        return 'Error with request'
+        output = {
+            'anger': None,
+            'disgust': None,
+            'fear': None,
+            'joy': None,
+            'sadness': None,
+            'dominant_emotion': None,
+        }
+        return output

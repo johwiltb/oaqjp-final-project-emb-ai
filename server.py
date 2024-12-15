@@ -1,21 +1,25 @@
+"""
+Provides an emotional detection thingy
+"""
 from flask import Flask, render_template, request, jsonify
 from EmotionDetection.emotion_detection import emotion_detector
 app = Flask('Emotion Detector App')
 @app.route('/')
 def hello():
+    """Catch the initial one"""
     return render_template('index.html')
 @app.route('/emotionDetector')
 def emotion_detector_route():
-   
-    # data = request.get_json()
-    # print(data)
-    # text_to_analyze = data.get('textToAnalyze', '')
+    """Handle all the requests"""
     text_to_analyze = request.args['textToAnalyze']
 
     if not text_to_analyze:
         return jsonify({'error': 'No text provided'}), 400
 
     emotions = emotion_detector(text_to_analyze)
+
+    if emotions['dominant_emotion'] is None:
+        return jsonify({'error': 'Invalid text! Please try again!'}), 400
 
     response = {
         "anger": emotions['anger'],
